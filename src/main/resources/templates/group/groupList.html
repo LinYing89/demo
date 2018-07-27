@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
+          integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/my-list-devGroup-item.css}">
+    <!--<link rel="stylesheet" th:href="@{css/m-list-devGroup-item.css}">-->
+    <title>组列表</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header('',${user.name})">header</div>
+<br>
+
+<div class="container">
+
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start"
+           th:each="devGroup : ${user.devGroups}" th:href="@{/group/{groupId}(groupId=${devGroup.id})}">
+            <div class="d-flex w-100 justify-content-between">
+                <span class="mb-1" th:text="${devGroup.name}">组名</span>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button th:id="'btnEdit' + ${devGroup.id}" type="button" class="btn btn-light">编辑</button>
+                        <button th:id="'btnDel' + ${devGroup.id}" type="button" class="btn btn-light">删除</button>
+                    </div>
+            </div>
+        </a>
+    </div>
+    <a class="btn btn-primary btn-block" href="#" role="button" th:href="@{/group/register}">添加组</a>
+</div>
+
+<div th:replace="fragments/footer :: footer">footer</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
+        integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,12 +1,14 @@
 package com.example.demo.data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用户组
  */
 @Entity
-public class Group {
+public class DevGroup {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -20,6 +22,9 @@ public class Group {
 
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "devGroup", cascade = CascadeType.ALL)
+    private List<MsgManager> msgManagers = new ArrayList<>();
 
     //经度
     private double longitude;
@@ -80,5 +85,35 @@ public class Group {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public List<MsgManager> getMsgManagers() {
+        return msgManagers;
+    }
+
+    public void setMsgManagers(List<MsgManager> msgManagers) {
+        this.msgManagers = msgManagers;
+    }
+
+    public void addMsgManager(MsgManager msgManager){
+        if(null != msgManager) {
+            if (!msgManagers.contains(msgManager)) {
+                msgManagers.add(msgManager);
+            }
+        }
+    }
+
+    public boolean removeMsgManager(MsgManager msgManager){
+        if(null != msgManager){
+            return msgManagers.remove(msgManager);
+        }
+        return false;
+    }
+
+    public MsgManager removeMsgManager(int index){
+        if(index > 0 && index < msgManagers.size()){
+            return msgManagers.remove(index);
+        }
+        return null;
     }
 }

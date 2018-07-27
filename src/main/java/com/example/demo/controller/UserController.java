@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping(value = "/user")
+@SessionAttributes("user")
 public class UserController {
 
     @Autowired
@@ -28,7 +30,7 @@ public class UserController {
 
     //提交注册信息
     @PostMapping("/register")
-    public String registerSubmit(Model model, @ModelAttribute RegisterUserHelper userHelper) {
+    public String registerSubmit(RedirectAttributes model, @ModelAttribute RegisterUserHelper userHelper) {
         //RegisterUserHelper error = new RegisterUserHelper();
         if(userHelper.getName().isEmpty()){
             userHelper.setUserNameError("用户名为空");
@@ -66,7 +68,10 @@ public class UserController {
         }
         user.setPassword(userHelper.getPassword());
         userRepository.save(user);
-        return "login";
+        //重定向
+        model.addAttribute("userId", user.getId());
+        model.addFlashAttribute("user", user);
+        return "redirect:/group/list/{userId}";
     }
 
     //打开登录页面
@@ -78,12 +83,13 @@ public class UserController {
 
     //提交登录信息
     @PostMapping("/login")
-    public String loginCheck(HttpServletResponse httpServletResponse, @ModelAttribute RegisterUserHelper userHelper) {
+    public String loginCheck(HttpServletResponse httpServletResponse, RedirectAttributes model, @ModelAttribute RegisterUserHelper userHelper) {
         User userDb = userRepository.findByEmailOrTel(userHelper.getName(), userHelper.getName());
         if(null == userDb){
             userHelper.setUserNameError("用户不存在");
             return "login";
         }
+        //userDb.getDevGroups();
         if(!userDb.getPassword().equals(userHelper.getPassword())){
             userHelper.setPasswordError("密码错误");
             return "login";
@@ -94,6 +100,21 @@ public class UserController {
             cookie.setMaxAge(Integer.MAX_VALUE); //设置cookie的过期时间是10s
             httpServletResponse.addCookie(cookie);
         }
-        return "hello";
+
+        //重定向
+        model.addAttribute("userId", userDb.getId());
+
+        model.addFlashAttribute("user", userDb);
+        return "redirect:/group/list/{userId}";
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse httpServletResponse, Model model){
+        Cookie userCookie = new Cookie("userId", "");
+        userCookie.setMaxAge(0);
+        userCookie.setPath("/");
+        httpServletResponse.addCookie(userCookie);
+        model.addAttribute("registerUserHelper", new RegisterUserHelper());
+        return "login";
     }
 }

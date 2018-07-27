@@ -23,7 +23,7 @@ public class User {
     private String tel;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Group> groups = new ArrayList<>();
+    private List<DevGroup> devGroups = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -73,35 +73,49 @@ public class User {
         this.tel = tel;
     }
 
-    public List<Group> getGroups() {
-        return groups;
+    public List<DevGroup> getDevGroups() {
+        return devGroups;
     }
 
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
+    public void setDevGroups(List<DevGroup> devGroups) {
+        this.devGroups = devGroups;
     }
 
-    public void addGroup(Group group){
-        if(null != group){
-            if(!groups.contains(group)){
-                group.setUser(this);
-                groups.add(group);
+    /**
+     * 根据组id寻找组
+     * @param devGroupId 组id
+     * @return 组对象
+     */
+    public DevGroup findDevGroupById(long devGroupId){
+        for(DevGroup group : devGroups){
+            if(group.getId() == devGroupId){
+                return group;
+            }
+        }
+        return null;
+    }
+
+    public void addGroup(DevGroup devGroup){
+        if(null != devGroup){
+            if(!devGroups.contains(devGroup)){
+                devGroup.setUser(this);
+                devGroups.add(devGroup);
             }
         }
     }
 
-    public boolean removeGroup(Group group){
-        if(null != group) {
-            group.setUser(null);
-            return groups.remove(group);
+    public boolean removeGroup(DevGroup devGroup){
+        if(null != devGroup) {
+            devGroup.setUser(null);
+            return devGroups.remove(devGroup);
         }
         return false;
     }
 
     public boolean removeGroup(int index){
-        if(index < groups.size()){
-            Group group = groups.get(index);
-            return removeGroup(group);
+        if(index < devGroups.size()){
+            DevGroup devGroup = devGroups.get(index);
+            return removeGroup(devGroup);
         }
         return false;
     }

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class HelloController {
     private UserRepository userRepository;
 
     @GetMapping(value = "/")
-    public String hello(Model model, @CookieValue(value="userId",required=false) String userId){
+    public String hello(Model model, RedirectAttributes rmodel, @CookieValue(value="userId",required=false) String userId){
         if(null == userId || userId.isEmpty()){
             return gotoLogin(model);
         }
@@ -29,15 +30,16 @@ public class HelloController {
             return gotoLogin(model);
         }
 
-        RegisterUserHelper registerUserHelper = new RegisterUserHelper();
-        registerUserHelper.setName(optionalUser.get().getName());
-        model.addAttribute("registerUserHelper", registerUserHelper);
-        return "/hello";
+        User user = optionalUser.get();
+
+        //重定向
+        rmodel.addAttribute("userId", user.getId());
+        rmodel.addFlashAttribute("user", user);
+        return "redirect:/group/list/{userId}";
     }
 
     private String gotoLogin(Model model){
-        RegisterUserHelper registerUserHelper = new RegisterUserHelper();
-        model.addAttribute("registerUserHelper", registerUserHelper);
+        model.addAttribute("registerUserHelper", new RegisterUserHelper());
         return "/login";
     }
 }

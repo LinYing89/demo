@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+
+    <title>组</title>
+
+    <script th:inline="javascript" type="text/javascript">
+        var serverIp = [[${config.serverIp}]];
+        console.info(serverIp);
+        console.info([[${config.webSocketPort}]]);
+    </script>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header(${group.name},${user.name})">header</div>
+<br>
+
+<div class="container">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">电力</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">电器</a>
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">其他</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">报警记录</a>
+                <a class="dropdown-item" href="#">历史记录</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">设备管理</a>
+            </div>
+        </div>
+    </nav>
+    <br />
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <!--电力page-->
+            <div class="row">
+                <div class="col-md-auto">
+                    <div class="list-group" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">1#机柜</a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                            <div class="row">
+                                <span class="col-4">功率因数:1</span>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-auto">
+                                    <div class="card">
+                                        <div class="card-header">A相</div>
+                                        <div class="card-body">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">电压:240V</li>
+                                                <li class="list-group-item">电流:10A</li>
+                                                <li class="list-group-item">有功功率:100kW</li>
+                                                <li class="list-group-item">无功功率:1kVar</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-auto">
+                                    <div class="card">
+                                        <div class="card-header">B相</div>
+                                        <div class="card-body">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">电压:240V</li>
+                                                <li class="list-group-item">电流:10A</li>
+                                                <li class="list-group-item">有功功率:100kW</li>
+                                                <li class="list-group-item">无功功率:1kVar</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-auto">
+                                    <div class="card">
+                                        <div class="card-header">C相</div>
+                                        <div class="card-body">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">电压:240V</li>
+                                                <li class="list-group-item">电流:10A</li>
+                                                <li class="list-group-item">有功功率:100kW</li>
+                                                <li class="list-group-item">无功功率:1kVar</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <!--电器page-->
+            <span class="badge badge-pill badge-primary">电器</span>
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-auto">
+                    <div class="card " style="width: 120px">
+                        <img id="d1_img" class="card-img-top bg-success " src="img/fan.png" style="height: 60px"></img>
+                        <div class="card-footer text-muted btn" type="button">
+                            <div class="row justify-content-center">
+                                <span>风&nbsp;&nbsp;机</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-auto">
+                    <div class="card " style="width: 120px">
+                        <img id="d2_img" class="card-img-top bg-secondary " src="img/light.png" style="height: 60px"></img>
+                        <div class="card-footer text-muted btn" type="button">
+                            <div class="row justify-content-center">
+                                <span>照&nbsp;&nbsp;明</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-auto">
+                    <div class="card " style="width: 120px">
+                        <img id="d3_img" class="card-img-top bg-secondary " src="img/air.png" style="height: 60px"></img>
+                        <div class="card-footer text-muted btn" type="button">
+                            <div class="row justify-content-center ">
+                                <span>空&nbsp;&nbsp;调</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <span class="badge badge-pill badge-primary">安防</span>
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-auto">
+                    <div class="card " style="width: 120px">
+                        <img id="d4_img" class="card-img-top bg-secondary " src="img/door.png" style="height: 60px"></img>
+                        <div class="card-footer text-muted">
+                            <div class="row justify-content-center">
+                                <span>门&nbsp;&nbsp;禁</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-auto">
+                    <div class="card " style="width: 120px">
+                        <img id="d5_img" class="card-img-top bg-danger " src="img/gas.png" style="height: 60px"></img>
+                        <div class="card-footer text-muted">
+                            <div class="row justify-content-center">
+                                <span>烟&nbsp;&nbsp;雾</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-auto">
+                    <div class="card " style="width: 120px">
+                        <img id="d6_img" class="card-img-top bg-secondary " src="img/water.png" style="height: 60px"></img>
+                        <div class="card-footer text-muted">
+                            <div class="row justify-content-center ">
+                                <span>水&nbsp;&nbsp;浸</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer">footer</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
+        integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

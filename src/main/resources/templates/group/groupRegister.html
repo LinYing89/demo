@@ -17,63 +17,15 @@
         <div class="row col-sm-6">
             <label for="inputEmail" class="col-sm-2 col-form-label">组名</label>
             <div class="col-sm-10">
-                <div th:switch="${registerGroupHelper.groupNameError}">
-                    <div th:case="''">
-                        <input class="form-control" id="inputEmail" placeholder="组名" th:field="*{name}" th:value="${registerGroupHelper.name}" required>
-                    </div>
-                    <div th:case="*">
-                        <input class="form-control is-invalid" id="inputEmail2" placeholder="组名" th:field="*{name}" th:value="${registerGroupHelper.name}" required>
-                        <div class="invalid-feedback" th:text="${registerUserHelper.userNameError}">组名错误</div>
-                    </div>
-                </div>
-
+                <input class="form-control" id="inputEmail" placeholder="组名" th:field="*{name}" th:value="${registerGroupHelper.name}" required
+                       th:classappend="${registerGroupHelper.userNameError != ''} ? 'is-invalid'">
+                <div class="invalid-feedback" th:if="${registerGroupHelper.userNameError == ''}" th:text="${registerGroupHelper.userNameError}">组名错误</div>
             </div>
         </div>
     </div>
     <div class="form-group row justify-content-md-center">
         <div class="row col-sm-6">
-            <label for="inputEmail" class="col-sm-2 col-form-label">组昵称</label>
-            <div class="col-sm-10">
-                <div th:switch="${registerGroupHelper.groupPetNameError}">
-                    <div th:case="''">
-                        <input class="form-control" id="inputPetName" placeholder="组昵称<" th:field="*{petName}" th:value="${registerGroupHelper.petName}" required>
-                    </div>
-                    <div th:case="*">
-                        <input class="form-control is-invalid" id="inputPetName2" placeholder="组昵称<" th:field="*{petName}" th:value="${registerGroupHelper.petName}" required>
-                        <div class="invalid-feedback" th:text="${registerGroupHelper.userNameError}">组昵称错误</div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <div class="form-group row justify-content-md-center">
-        <div class="row col-sm-6">
-            <label for="inputPassword" class="col-sm-2 col-form-label">密码</label>
-            <div class="col-sm-10">
-                <div th:switch="${registerGroupHelper.passwordError}">
-                    <div th:case="''">
-                        <input type="password" class="form-control" id="inputPassword" placeholder="密码" th:field="*{password}" required>
-                    </div>
-                    <div th:case="*">
-                        <input type="password" class="form-control is-invalid" id="inputPassword2" placeholder="密码" th:field="*{password}" required>
-                        <div class="invalid-feedback" th:text="${registerGroupHelper.passwordError}">密码错误</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="form-group row justify-content-md-center">
-        <div class="row col-sm-6">
-            <label for="ensurePassword" class="col-sm-2 col-form-label">确认密码</label>
-            <div class="col-sm-10">
-                <input type="password" class="form-control" id="ensurePassword" placeholder="确认密码" th:field="*{ensurePassword}" required>
-            </div>
-        </div>
-    </div>
-    <div class="form-group row justify-content-md-center">
-        <div class="row col-sm-6">
-            <button type="submit" class="col btn btn-primary">注册</button>
+            <button type="submit" class="col btn btn-primary">添加</button>
         </div>
     </div>
 </form>
