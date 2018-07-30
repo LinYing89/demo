@@ -1,6 +1,7 @@
 package com.example.demo.data;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class MsgManager {
             byte[] byMsgOne = Arrays.copyOfRange(byAllData, byStart, index);
             Omnibus omnibus = findOmnibus(byMsgOne[0]);
             if(null == omnibus) {
-                Logger logger = Logger.getLogger(this.getClass().getName());
+                Logger logger = LoggerFactory.getLogger(this.getClass());
                 logger.error("总线号不存在: num:" + byMsgOne[0]);
                 continue;
             }

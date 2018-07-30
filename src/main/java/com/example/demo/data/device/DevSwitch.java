@@ -24,4 +24,14 @@ public class DevSwitch extends Device {
         // TODO Auto-generated constructor stub
     }
 
+    public byte getAction() {
+        byte action;
+        if (getValue() == 0) {
+            action = 0;
+        } else {
+            action = (byte) 0xff;
+        }
+        return action;
+    }
+
 }

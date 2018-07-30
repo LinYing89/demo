@@ -1,6 +1,7 @@
 package com.example.demo.data;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class CollectorTerminal {
         int addrNum = by[0] << 8 | by[1];
         DataAddress addr = findDataAddress(addrNum);
         if(addr == null) {
-            Logger logger = Logger.getLogger(this.getClass().getName());
+            Logger logger = LoggerFactory.getLogger(this.getClass().getName());
             logger.error("数据地址不存在: num:" + addrNum);
             return;
         }

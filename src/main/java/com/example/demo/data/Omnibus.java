@@ -1,6 +1,7 @@
 package com.example.demo.data;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -88,7 +89,7 @@ public class Omnibus {
     }
 
     public void handler(byte[] by) {
-        Logger logger = Logger.getLogger(this.getClass().getName());
+        Logger logger = LoggerFactory.getLogger(this.getClass().getName());
         CollectorTerminal c = findCollectorTerminal(by[0]);
         if(c == null) {
             logger.error("采集终端不存在: num:" + by[0]);

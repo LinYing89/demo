@@ -26,6 +26,7 @@
             <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">电器</a>
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">其他</a>
             <div class="dropdown-menu">
+                <a class="dropdown-item" href="#nav-settings">设置</a>
                 <a class="dropdown-item" href="#">报警记录</a>
                 <a class="dropdown-item" href="#">历史记录</a>
                 <div class="dropdown-divider"></div>
@@ -47,45 +48,45 @@
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
                             <div class="row">
-                                <span class="col-4">功率因数:1</span>
+                                <span class="col-4">功率因数:<span id="yinshu">1</span></span>
                             </div>
                             <br />
                             <div class="row">
-                                <div class="col-md-auto">
+                                <div class="col-md-4 col-sm-6 col-12">
                                     <div class="card">
                                         <div class="card-header">A相</div>
                                         <div class="card-body">
                                             <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">电压:240V</li>
-                                                <li class="list-group-item">电流:10A</li>
-                                                <li class="list-group-item">有功功率:100kW</li>
-                                                <li class="list-group-item">无功功率:1kVar</li>
+                                                <li class="list-group-item">电压:&nbsp;<span id="axV">0</span><span>V</span></li>
+                                                <li class="list-group-item">电流:&nbsp;<label id="axA">0</label><span>A</span></li>
+                                                <li class="list-group-item">有功功率:&nbsp;<span id="axyg">0</span><span>kW</span></li>
+                                                <li class="list-group-item">无功功率:&nbsp;<span id="axwg">0</span><span>kVar</span></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-auto">
+                                <div class="col-md-4 col-sm-6 col-12">
                                     <div class="card">
                                         <div class="card-header">B相</div>
                                         <div class="card-body">
                                             <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">电压:240V</li>
-                                                <li class="list-group-item">电流:10A</li>
-                                                <li class="list-group-item">有功功率:100kW</li>
-                                                <li class="list-group-item">无功功率:1kVar</li>
+                                                <li class="list-group-item">电压:&nbsp;<span id="bxV">0</span><span>V</span></li>
+                                                <li class="list-group-item">电流:&nbsp;<span id="bxA">0</span><span>A</span></li>
+                                                <li class="list-group-item">有功功率:&nbsp;<span id="bxyg">0</span><span>kW</span></li>
+                                                <li class="list-group-item">无功功率:&nbsp;<span id="bxwg">0</span><span>kVar</span></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-auto">
+                                <div class="col-md-4 col-sm-6 col-12">
                                     <div class="card">
                                         <div class="card-header">C相</div>
                                         <div class="card-body">
                                             <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">电压:240V</li>
-                                                <li class="list-group-item">电流:10A</li>
-                                                <li class="list-group-item">有功功率:100kW</li>
-                                                <li class="list-group-item">无功功率:1kVar</li>
+                                                <li class="list-group-item">电压:&nbsp;<span id="cxV">0</span><span>V</span></li>
+                                                <li class="list-group-item">电流:&nbsp;<span id="cxA">0</span><span>A</span></li>
+                                                <li class="list-group-item">有功功率:&nbsp;<span id="cxyg">0</span><span>kW</span></li>
+                                                <li class="list-group-item">无功功率:&nbsp;<span id="cxwg">0</span><span>kVar</span></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -100,30 +101,33 @@
             <!--电器page-->
             <span class="badge badge-pill badge-primary">电器</span>
             <div class="row">
-                <div class="col-lg-2 col-md-3 col-sm-auto">
-                    <div class="card " style="width: 120px">
-                        <img id="d1_img" class="card-img-top bg-success " src="img/fan.png" style="height: 60px"></img>
-                        <div class="card-footer text-muted btn" type="button">
+                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                    <div class="card " style="width: 128px">
+                        <img id="d1_img" class="card-img-top bg-success " src="img/fan.png" style="height: 60px"
+                        th:src="@{/img/fan.png}"/>
+                        <div id="d1_btn" class="card-footer text-muted btn" type="button">
                             <div class="row justify-content-center">
                                 <span>风&nbsp;&nbsp;机</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-auto">
-                    <div class="card " style="width: 120px">
-                        <img id="d2_img" class="card-img-top bg-secondary " src="img/light.png" style="height: 60px"></img>
-                        <div class="card-footer text-muted btn" type="button">
+                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                    <div class="card " style="width: 128px">
+                        <img id="d2_img" class="card-img-top bg-secondary " src="img/light.png" style="height: 60px"
+                             th:src="@{/img/light.png}"/>
+                        <div id="d2_btn" class="card-footer text-muted btn" type="button">
                             <div class="row justify-content-center">
                                 <span>照&nbsp;&nbsp;明</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-auto">
-                    <div class="card " style="width: 120px">
-                        <img id="d3_img" class="card-img-top bg-secondary " src="img/air.png" style="height: 60px"></img>
-                        <div class="card-footer text-muted btn" type="button">
+                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                    <div class="card " style="width: 128px">
+                        <img id="d3_img" class="card-img-top bg-secondary " src="img/air.png" style="height: 60px"
+                             th:src="@{/img/air.png}"/>
+                        <div id="d3_btn" class="card-footer text-muted btn" type="button">
                             <div class="row justify-content-center ">
                                 <span>空&nbsp;&nbsp;调</span>
                             </div>
@@ -134,9 +138,10 @@
             <br />
             <span class="badge badge-pill badge-primary">安防</span>
             <div class="row">
-                <div class="col-lg-2 col-md-3 col-sm-auto">
-                    <div class="card " style="width: 120px">
-                        <img id="d4_img" class="card-img-top bg-secondary " src="img/door.png" style="height: 60px"></img>
+                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                    <div class="card " style="width: 128px">
+                        <img id="a1_img" class="card-img-top bg-secondary " src="img/door.png" style="height: 60px"
+                             th:src="@{/img/door.png}"/>
                         <div class="card-footer text-muted">
                             <div class="row justify-content-center">
                                 <span>门&nbsp;&nbsp;禁</span>
@@ -144,9 +149,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-auto">
-                    <div class="card " style="width: 120px">
-                        <img id="d5_img" class="card-img-top bg-danger " src="img/gas.png" style="height: 60px"></img>
+                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                    <div class="card " style="width: 128px">
+                        <img id="a2_img" class="card-img-top bg-danger " src="img/gas.png" style="height: 60px"
+                             th:src="@{/img/gas.png}"/>
                         <div class="card-footer text-muted">
                             <div class="row justify-content-center">
                                 <span>烟&nbsp;&nbsp;雾</span>
@@ -154,9 +160,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-auto">
-                    <div class="card " style="width: 120px">
-                        <img id="d6_img" class="card-img-top bg-secondary " src="img/water.png" style="height: 60px"></img>
+                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                    <div class="card " style="width: 128px">
+                        <img id="a3_img" class="card-img-top bg-secondary " src="img/water.png" style="height: 60px"
+                             th:src="@{/img/water.png}"/>
                         <div class="card-footer text-muted">
                             <div class="row justify-content-center ">
                                 <span>水&nbsp;&nbsp;浸</span>
@@ -166,7 +173,43 @@
                 </div>
             </div>
         </div>
-
+        <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
+            <!--设置-->
+            <form>
+                <div class="form-row">
+                    <div class="form-check col-md-6 offset-md-3">
+                        <input class="form-check-input" type="checkbox" value="" id="temLinkageEnable"> <label class="form-check-label" for="temLinkageEnable">
+                        温度连锁是否可用 </label>
+                    </div>
+                </div>
+                <br />
+                <div class="input-group col-md-6 offset-md-3">
+                    <div class="input-group-append">
+                        <span class="input-group-text">当温度大于</span>
+                    </div>
+                    <input name="tem_great_value" id="tem_great_value" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <div class="input-group-append">
+                        <span class="input-group-text">℃ </span> <span class="input-group-text">打开风机</span>
+                    </div>
+                </div>
+                <br />
+                <div class="input-group col-md-6 offset-md-3">
+                    <div class="input-group-append">
+                        <span class="input-group-text">当温度低于</span>
+                    </div>
+                    <input name="tem_less_value" id="tem_less_value" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <div class="input-group-append">
+                        <span class="input-group-text">℃ </span> <span class="input-group-text">关闭风机</span>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <div class="col-md-3 offset-md-3">
+                        <button id="btn_submit" type="button" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -182,5 +225,10 @@
         integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>
 
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+<script src="/js/group.js"></script>
 </body>
 </html>

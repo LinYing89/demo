@@ -40,4 +40,28 @@ public class Untils {
         }
         return flag;
     }
+
+    public static byte[] createByteMsg(byte[] b1) {
+        if(b1 == null) {
+            return null;
+        }
+        byte[] byVerify = getVerify(b1);
+        return unitArray(b1, byVerify);
+    }
+    public static byte[] unitArray(byte[] b1, byte[] b2) {
+        byte[] byMsg = new byte[b1.length + b2.length];
+        System.arraycopy(b1, 0, byMsg, 0, b1.length);
+        System.arraycopy(b2, 0, byMsg, b1.length, b2.length);
+        return byMsg;
+    }
+    public static byte[] getVerify(byte[] by) {
+        byte[] bysum = new byte[2];
+        int chksum = 0;
+        for (int i = 0; i < by.length; i++) {
+            chksum += by[i];
+        }
+        bysum[1] = (byte) (chksum & 0xFF);
+        bysum[0] = (byte) (chksum >> 8 & 0xFF);
+        return bysum;
+    }
 }
