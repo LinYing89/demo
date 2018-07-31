@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
+          integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 
     <title>组</title>
 
@@ -12,6 +13,7 @@
         var serverIp = [[${config.serverIp}]];
         console.info(serverIp);
         console.info([[${config.webSocketPort}]]);
+
     </script>
 
 </head>
@@ -22,9 +24,12 @@
 <div class="container">
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">电力</a>
-            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">电器</a>
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">其他</a>
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+               aria-controls="nav-home" aria-selected="true">电力</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+               aria-controls="nav-profile" aria-selected="false">电器</a>
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+               aria-expanded="false">其他</a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="#nav-settings">设置</a>
                 <a class="dropdown-item" href="#">报警记录</a>
@@ -34,33 +39,42 @@
             </div>
         </div>
     </nav>
-    <br />
+    <div class="row justify-content-end">
+        <span>温度:<label id="c1">26</label>℃&nbsp;&nbsp;&nbsp;&nbsp;湿度:<label id="c2">50</label>%</span>
+    </div>
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             <!--电力page-->
             <div class="row">
                 <div class="col-md-auto">
                     <div class="list-group" id="list-tab" role="tablist">
-                        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">1#机柜</a>
+                        <a class="list-group-item list-group-item-action active" id="list-home-list"
+                           data-toggle="list" href="#list-home" role="tab" aria-controls="home">1#机柜</a>
                     </div>
                 </div>
                 <div class="col">
                     <div class="tab-content">
-                        <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                        <div class="tab-pane fade show active" id="list-home" role="tabpanel"
+                             aria-labelledby="list-home-list">
                             <div class="row">
                                 <span class="col-4">功率因数:<span id="yinshu">1</span></span>
                             </div>
-                            <br />
+                            <br/>
                             <div class="row">
                                 <div class="col-md-4 col-sm-6 col-12">
                                     <div class="card">
                                         <div class="card-header">A相</div>
                                         <div class="card-body">
                                             <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">电压:&nbsp;<span id="axV">0</span><span>V</span></li>
-                                                <li class="list-group-item">电流:&nbsp;<label id="axA">0</label><span>A</span></li>
-                                                <li class="list-group-item">有功功率:&nbsp;<span id="axyg">0</span><span>kW</span></li>
-                                                <li class="list-group-item">无功功率:&nbsp;<span id="axwg">0</span><span>kVar</span></li>
+                                                <li class="list-group-item">电压:&nbsp;<span
+                                                        id="axV">0</span><span>V</span></li>
+                                                <li class="list-group-item">电流:&nbsp;<label
+                                                        id="axA">0</label><span>A</span>
+                                                </li>
+                                                <li class="list-group-item">有功功率:&nbsp;<span
+                                                        id="axyg">0</span><span>kW</span></li>
+                                                <li class="list-group-item">无功功率:&nbsp;<span
+                                                        id="axwg">0</span><span>kVar</span></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -70,10 +84,14 @@
                                         <div class="card-header">B相</div>
                                         <div class="card-body">
                                             <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">电压:&nbsp;<span id="bxV">0</span><span>V</span></li>
-                                                <li class="list-group-item">电流:&nbsp;<span id="bxA">0</span><span>A</span></li>
-                                                <li class="list-group-item">有功功率:&nbsp;<span id="bxyg">0</span><span>kW</span></li>
-                                                <li class="list-group-item">无功功率:&nbsp;<span id="bxwg">0</span><span>kVar</span></li>
+                                                <li class="list-group-item">电压:&nbsp;<span
+                                                        id="bxV">0</span><span>V</span></li>
+                                                <li class="list-group-item">电流:&nbsp;<span
+                                                        id="bxA">0</span><span>A</span></li>
+                                                <li class="list-group-item">有功功率:&nbsp;<span
+                                                        id="bxyg">0</span><span>kW</span></li>
+                                                <li class="list-group-item">无功功率:&nbsp;<span
+                                                        id="bxwg">0</span><span>kVar</span></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -83,10 +101,14 @@
                                         <div class="card-header">C相</div>
                                         <div class="card-body">
                                             <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">电压:&nbsp;<span id="cxV">0</span><span>V</span></li>
-                                                <li class="list-group-item">电流:&nbsp;<span id="cxA">0</span><span>A</span></li>
-                                                <li class="list-group-item">有功功率:&nbsp;<span id="cxyg">0</span><span>kW</span></li>
-                                                <li class="list-group-item">无功功率:&nbsp;<span id="cxwg">0</span><span>kVar</span></li>
+                                                <li class="list-group-item">电压:&nbsp;<span
+                                                        id="cxV">0</span><span>V</span></li>
+                                                <li class="list-group-item">电流:&nbsp;<span
+                                                        id="cxA">0</span><span>A</span></li>
+                                                <li class="list-group-item">有功功率:&nbsp;<span
+                                                        id="cxyg">0</span><span>kW</span></li>
+                                                <li class="list-group-item">无功功率:&nbsp;<span
+                                                        id="cxwg">0</span><span>kVar</span></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -104,7 +126,7 @@
                 <div class="col-lg-2 col-md-3 col-sm-4 col-6">
                     <div class="card " style="width: 128px">
                         <img id="d1_img" class="card-img-top bg-success " src="img/fan.png" style="height: 60px"
-                        th:src="@{/img/fan.png}"/>
+                             th:src="@{/img/fan.png}"/>
                         <div id="d1_btn" class="card-footer text-muted btn" type="button">
                             <div class="row justify-content-center">
                                 <span>风&nbsp;&nbsp;机</span>
@@ -135,7 +157,7 @@
                     </div>
                 </div>
             </div>
-            <br />
+            <hr/>
             <span class="badge badge-pill badge-primary">安防</span>
             <div class="row">
                 <div class="col-lg-2 col-md-3 col-sm-4 col-6">
@@ -178,31 +200,34 @@
             <form>
                 <div class="form-row">
                     <div class="form-check col-md-6 offset-md-3">
-                        <input class="form-check-input" type="checkbox" value="" id="temLinkageEnable"> <label class="form-check-label" for="temLinkageEnable">
+                        <input class="form-check-input" type="checkbox" value="" id="temLinkageEnable"> <label
+                            class="form-check-label" for="temLinkageEnable">
                         温度连锁是否可用 </label>
                     </div>
                 </div>
-                <br />
+                <br/>
                 <div class="input-group col-md-6 offset-md-3">
                     <div class="input-group-append">
                         <span class="input-group-text">当温度大于</span>
                     </div>
-                    <input name="tem_great_value" id="tem_great_value" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <input name="tem_great_value" id="tem_great_value" type="text" class="form-control"
+                           aria-label="Amount (to the nearest dollar)">
                     <div class="input-group-append">
                         <span class="input-group-text">℃ </span> <span class="input-group-text">打开风机</span>
                     </div>
                 </div>
-                <br />
+                <br/>
                 <div class="input-group col-md-6 offset-md-3">
                     <div class="input-group-append">
                         <span class="input-group-text">当温度低于</span>
                     </div>
-                    <input name="tem_less_value" id="tem_less_value" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <input name="tem_less_value" id="tem_less_value" type="text" class="form-control"
+                           aria-label="Amount (to the nearest dollar)">
                     <div class="input-group-append">
                         <span class="input-group-text">℃ </span> <span class="input-group-text">关闭风机</span>
                     </div>
                 </div>
-                <br />
+                <br/>
                 <div class="form-group row">
                     <div class="col-md-3 offset-md-3">
                         <button id="btn_submit" type="button" class="btn btn-primary">保存</button>
@@ -212,7 +237,6 @@
         </div>
     </div>
 </div>
-
 <div th:replace="fragments/footer :: footer">footer</div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

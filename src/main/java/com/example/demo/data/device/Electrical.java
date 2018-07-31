@@ -1,5 +1,7 @@
 package com.example.demo.data.device;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -8,6 +10,7 @@ import javax.persistence.OneToOne;
 public class Electrical extends Device {
 
     @OneToOne(mappedBy = "electrical", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("ele_info")
     private EleInfo eleInfo = new EleInfo();
 
     public Electrical() {

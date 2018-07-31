@@ -1,5 +1,6 @@
 package com.example.demo.data;
 
+import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,5 +64,15 @@ public class Untils {
         bysum[1] = (byte) (chksum & 0xFF);
         bysum[0] = (byte) (chksum >> 8 & 0xFF);
         return bysum;
+    }
+
+    /**
+     * accurate to the second decimal place
+     * @param f 没转换之前的值
+     * @return 转换后的保留2位小数的值
+     */
+    public static float scale(float f) {
+        BigDecimal b = new BigDecimal(f);
+        return b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 }

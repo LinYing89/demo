@@ -1,5 +1,8 @@
 package com.example.demo.data.device;
 
+import com.example.demo.data.Untils;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -30,6 +33,7 @@ public class EleInfo {
     private float yinshu;
 
     @OneToOne
+    @JsonBackReference("ele_info")
     private Electrical electrical;
 
     public long getId() {
@@ -81,83 +85,77 @@ public class EleInfo {
         this.yinshu = yinshu;
     }
 
-    public Electrical getElectrical() {
-        return electrical;
-    }
-    public void setElectrical(Electrical electrical) {
-        this.electrical = electrical;
-    }
     /**
      * A相有功功率
-     * @return
+     * @return A相有功功率
      */
-    public float axYouGongPower() {
-        return scale(axA * axV * yinshu / 1000);
+    public float getAxyg(){
+        return Untils.scale(axA * axV * yinshu / 1000);
     }
 
     /**
      * A相无功功率
-     * @return
+     * @return A相无功功率
      */
-    public float axWuGongPower() {
-        return scale(axA * axV * (1 - yinshu) / 1000);
+    public float getAxwg(){
+        return Untils.scale(axA * axV * (1 - yinshu) / 1000);
     }
 
     /**
      * B相有功功率
-     * @return
+     * @return B相有功功率
      */
-    public float bxYouGongPower() {
-        return scale(bxA * bxV * yinshu / 1000);
+    public float getBxyg(){
+        return Untils.scale(bxA * bxV * yinshu / 1000);
     }
 
     /**
      * B相无功功率
-     * @return
+     * @return B相无功功率
      */
-    public float bxWuGongPower() {
-        return scale(bxA * bxV * (1 - yinshu) / 1000);
+    public float getBxwg(){
+        return Untils.scale(bxA * bxV * (1 - yinshu) / 1000);
     }
 
     /**
      * C相有功功率
-     * @return
+     * @return C相有功功率
      */
-    public float cxYouGongPower() {
-        return scale(cxA * cxV * yinshu / 1000);
+    public float getCxyg(){
+        return Untils.scale(cxA * cxV * yinshu / 1000);
     }
 
     /**
      * C相无功功率
-     * @return
+     * @return C相无功功率
      */
-    public float cxWuGongPower() {
-        return scale(cxA * cxV * (1 - yinshu) / 1000);
+    public float getCxwg(){
+        return Untils.scale(cxA * cxV * (1 - yinshu) / 1000);
+    }
+
+    public Electrical getElectrical() {
+        return electrical;
+    }
+
+    public void setElectrical(Electrical electrical) {
+        this.electrical = electrical;
     }
 
     /**
      * 总有功功率
-     * @return
+     * @return 总有功功率
      */
     public float zongYouGongPower() {
-        return scale(axYouGongPower() + bxYouGongPower() + cxYouGongPower());
+        return Untils.scale(getAxyg() + getBxyg() + getCxyg());
     }
 
     /**
      * 总相无功功率
-     * @return
+     * @return 总相无功功率
      */
     public float zongWuGongPower() {
-        return scale(axWuGongPower() + bxWuGongPower() + cxWuGongPower());
+        return Untils.scale(getAxwg() + getBxwg() + getCxwg());
     }
 
-    /**
-     * accurate to the second decimal place
-     * @param f
-     * @return
-     */
-    public static float scale(float f) {
-        BigDecimal b = new BigDecimal(f);
-        return b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-    }
+
 }

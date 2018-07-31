@@ -5,12 +5,8 @@ import com.example.demo.data.CollectorTerminal;
 import com.example.demo.data.DataAddress;
 import com.example.demo.data.MsgManager;
 import com.example.demo.data.Omnibus;
-import com.example.demo.data.device.Device;
-import com.example.demo.data.device.EleInfo;
-import com.example.demo.data.device.Electrical;
-import com.example.demo.data.device.ValueTrigger;
+import com.example.demo.data.device.*;
 import com.example.demo.repository.MsgManagerRepository;
-import com.example.demo.service.ValueChangedService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
@@ -20,9 +16,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
@@ -31,7 +25,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public static MsgManager msgManager;
 
     private MsgManagerRepository msgManagerRepository = SpringUtil.getBean(MsgManagerRepository.class);
-    private ValueChangedService valueChangedService = SpringUtil.getBean(ValueChangedService.class);
 
     public static Device d1;
     public static Device d2;
@@ -54,7 +47,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf m = (ByteBuf) msg;
-        valueChangedService.broadcastValueChanged();
         try {
             byte[] req = new byte[m.readableBytes()];
             m.readBytes(req);
@@ -138,105 +130,42 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
-    public static void refreshValues(MsgManager m) {
-        for (Omnibus o : m.getListOmnibus()) {
+    public static List<ValueData> findValueData(){
+        if (null == msgManager) {
+            return null;
+        }
+        List<ValueData> valueDataList = new ArrayList<>();
+
+        for (Omnibus o : msgManager.getListOmnibus()) {
+            for (CollectorTerminal c : o.getListCollectorTerminal()) {
+                for (DataAddress d : c.getListDataAddress()) {
+                    for (Device dev : d.getListDevice()) {
+                        ValueData valueData = new ValueData(dev.getCoding(), dev.getValue());
+                        valueDataList.add(valueData);
+                    }
+                }
+            }
+        }
+        return valueDataList;
+    }
+
+    public static EleInfo findEleInfo(){
+        if (null == msgManager) {
+            return null;
+        }
+        for (Omnibus o : msgManager.getListOmnibus()) {
             for (CollectorTerminal c : o.getListCollectorTerminal()) {
                 for (DataAddress d : c.getListDataAddress()) {
                     for (Device dev : d.getListDevice()) {
                         Map<String, Object> map = new HashMap<>();
                         if (dev instanceof Electrical) {
-                            EleInfo ei = ((Electrical) dev).getEleInfo();
-                            map.put("id", 0);
-                            map.put("coding", "ele");
-                            map.put("axA", ei.getAxA());
-                            map.put("bxA", ei.getBxA());
-                            map.put("cxA", ei.getCxA());
-                            map.put("axV", ei.getAxV());
-                            map.put("bxV", ei.getBxV());
-                            map.put("cxV", ei.getCxV());
-                            map.put("yinshu", ei.getYinshu());
-                            map.put("axyg", ei.axYouGongPower());
-                            map.put("axwg", ei.axWuGongPower());
-                            map.put("bxyg", ei.bxYouGongPower());
-                            map.put("bxwg", ei.bxWuGongPower());
-                            map.put("cxyg", ei.cxYouGongPower());
-                            map.put("cxwg", ei.cxWuGongPower());
-                            sendMap(map);
-                            continue;
-                        }
-                        //0表示设备状态或值
-                        map.put("id", 0);
-                        map.put("coding", dev.getCoding());
-                        map.put("value", dev.getValue());
-                        sendMap(map);
-                        if (dev.getCoding().equals("c1")) {
-                            //温度
-                            for (ValueTrigger trigger : dev.getListValueTrigger()) {
-                                map = new HashMap<>();
-                                //1表示触发值
-                                map.put("id", 1);
-                                map.put("symbol", trigger.getCompareSymbol());
-                                map.put("coding", dev.getCoding());
-                                map.put("value", trigger.getTriggerValue());
-                                sendMap(map);
-                            }
+                            return ((Electrical) dev).getEleInfo();
                         }
                     }
                 }
             }
         }
-    }
-
-    public static void refreshEleInfo(MyWebSocket socket, MsgManager m) {
-        for (Omnibus o : m.getListOmnibus()) {
-            for (CollectorTerminal c : o.getListCollectorTerminal()) {
-                for (DataAddress d : c.getListDataAddress()) {
-                    for (Device dev : d.getListDevice()) {
-                        Map<String, Object> map = new HashMap<>();
-                        if (dev instanceof Electrical) {
-                            EleInfo ei = ((Electrical) dev).getEleInfo();
-                            map.put("id", 0);
-                            map.put("coding", "ele");
-                            map.put("axA", ei.getAxA());
-                            map.put("bxA", ei.getBxA());
-                            map.put("cxA", ei.getCxA());
-                            map.put("axV", ei.getAxV());
-                            map.put("bxV", ei.getBxV());
-                            map.put("cxV", ei.getCxV());
-                            map.put("yinshu", ei.getYinshu());
-                            map.put("axyg", ei.axYouGongPower());
-                            map.put("axwg", ei.axWuGongPower());
-                            map.put("bxyg", ei.bxYouGongPower());
-                            map.put("bxwg", ei.bxWuGongPower());
-                            map.put("cxyg", ei.cxYouGongPower());
-                            map.put("cxwg", ei.cxWuGongPower());
-                            ObjectMapper mapper = new ObjectMapper();
-                            try {
-                                String json = mapper.writeValueAsString(map);
-                                if (null != json && null != socket) {
-                                    socket.sendMessage(json);
-                                }
-                            } catch (JsonProcessingException e) {
-                                e.printStackTrace();
-                            }
-                            continue;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public static void sendMap(Map<String, Object> map) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String json = mapper.writeValueAsString(map);
-            if (null != json) {
-                MyWebSocketHelper.sendGroupMessage(json);
-            }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        return null;
     }
 
     public static String bytesToHexString(byte[] src) {

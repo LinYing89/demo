@@ -5,8 +5,10 @@ import com.example.demo.data.AlarmInfo;
 import com.example.demo.data.HistoryInfo;
 import com.example.demo.data.device.DevAlarm;
 import com.example.demo.data.device.Device;
+import com.example.demo.data.device.ValueData;
 import com.example.demo.repository.DeviceRepository;
 import com.example.demo.repository.HistoryInfoRepository;
+import com.example.demo.service.ValueChangedService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -23,6 +25,7 @@ public class MyOnValueChangedListener implements Device.OnValueChangedListener {
 
     private DeviceRepository deviceRepository = SpringUtil.getBean(DeviceRepository.class);
     private HistoryInfoRepository historyInfoRepository = SpringUtil.getBean(HistoryInfoRepository .class);
+    private ValueChangedService valueChangedService = SpringUtil.getBean(ValueChangedService.class);
 
     @Override
     public void onValueChanged(Device device, float value) {
@@ -33,19 +36,12 @@ public class MyOnValueChangedListener implements Device.OnValueChangedListener {
 
         historyInfoRepository.save(hi);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", 0);
-        map.put("coding", device.getCoding());
-        map.put("value", value);
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String json = mapper.writeValueAsString(map);
-            if (null != json) {
-                MyWebSocketHelper.sendGroupMessage(json);
-            }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        //发送到浏览器
+        ValueData valueData = new ValueData();
+        valueData.setCoding(device.getCoding());
+        valueData.setValue(value);
+        valueChangedService.broadcastValueChanged(valueData);
+
         if(device instanceof DevAlarm) {
             AlarmInfo ai = new AlarmInfo();
             ai.setAlarmTime(new Date());

@@ -66,4 +66,14 @@ public class GroupController {
         model.addAttribute("config", config);
         return "group/group";
     }
+
+    //打开组页面
+    @GetMapping("/{groupId}")
+    public String history(@PathVariable long groupId, Model model) {
+        User user = (User) model.asMap().get("user");
+        DevGroup group = user.findDevGroupById(groupId);
+        model.addAttribute("group", group);
+        model.addAttribute("config", config);
+        return "group/group";
+    }
 }

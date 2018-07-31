@@ -129,18 +129,68 @@ function ctrlClick(which) {
 	}
 }
 
-// 格式 {"coding":"a1", "value":1.0}
-function analysis(message) {
-	//alert(message);
-	//心跳
-	if(message == "H"){
-		return;
+// 0报警,1不报警
+function alarm(coding, img, txt, value) {
+	if (value == 0) {
+		img.setAttribute("class", "card-img-top bg-danger");
+	} else {
+		img.setAttribute("class", "card-img-top bg-info");
 	}
+}
 
-	var obj = JSON.parse(message);
-	var value = obj.value;
-	if (obj.id == 0) {
-		switch (obj.coding) {
+// 0开,1关
+function device(img, txt, value, btn) {
+	if (value == 0) {
+		img.setAttribute("class", "card-img-top bg-success");
+		txt.innerText = "开";
+		btn.setAttribute("class", "col m-1 btn btn-success");
+	} else {
+		img.setAttribute("class", "card-img-top bg-info");
+		txt.innerText = "关";
+		btn.setAttribute("class", "col m-1 btn btn-info");
+	}
+}
+
+function initWebSocket() {
+	// 变量ser在index.jsp文件中初始化,读取request的参数需要在jsp文件中
+	console.info(serverIp);
+
+	var socket = new SockJS('/gs-guide-websocket');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            stompClient.send("/app/refresh", {}, JSON.stringify({'message': 'hello'}));
+            //开启定时心跳
+            heart = self.setInterval("sendHeart()",5000);
+
+            stompClient.subscribe('/topic/eleInfo', handlerEleInfo);
+            stompClient.subscribe('/topic/valueChanged', handlerValueChanged);
+        });
+}
+
+//处理电力数据
+function handlerEleInfo(message){
+    var eleInfo = JSON.parse(message.body);
+    li_axA.innerText = eleInfo.axA;
+    li_bxA.innerText = eleInfo.bxA;
+    li_cxA.innerText = eleInfo.cxA;
+    li_axV.innerText = eleInfo.axV;
+    li_bxV.innerText = eleInfo.bxV;
+    li_cxV.innerText = eleInfo.cxV;
+    li_yinshu.innerText = eleInfo.yinshu;
+    li_axyg.innerText = eleInfo.axyg;
+    li_axwg.innerText = eleInfo.axwg;
+    li_bxyg.innerText = eleInfo.bxyg;
+    li_bxwg.innerText = eleInfo.bxwg;
+    li_cxyg.innerText = eleInfo.cxyg;
+    li_cxwg.innerText = eleInfo.cxwg;
+}
+
+//处理设备值数据
+function handlerValueChanged(message){
+    var valueData = JSON.parse(message.body);
+    console.log('handlerValueChanged : ' + valueData.coding + valueData.value);
+    var value = valueData.value;
+    switch (valueData.coding) {
 		case "a1":
 			alarm("a1", a1_img, a1_txt, value);
 			break;
@@ -165,86 +215,11 @@ function analysis(message) {
 		case "c2":
 			c2.innerText = value;
 			break;
-			case "ele":
-			li_axA.innerText = obj.axA;
-			li_bxA.innerText = obj.bxA;
-			li_cxA.innerText = obj.cxA;
-			li_axV.innerText = obj.axV;
-			li_bxV.innerText = obj.bxV;
-			li_cxV.innerText = obj.cxV;
-			li_yinshu.innerText = obj.yinshu;
-			li_axyg.innerText = obj.axyg;
-			li_axwg.innerText = obj.axwg;
-			li_bxyg.innerText = obj.bxyg;
-			li_bxwg.innerText = obj.bxwg;
-			li_cxyg.innerText = obj.cxyg;
-			li_cxwg.innerText = obj.cxwg;
-			break;
-		}
-	} else if (obj.id == 1) {
-		if (obj.symbol == "GREAT") {
-			tem_great_value.value = value;
-		} else if (obj.symbol == "LESS") {
-			tem_less_value.value = value;
-		}
-	} else if (obj.id == 2) {
-		alert("保存成功");
-	}
-}
-
-// 0报警,1不报警
-function alarm(coding, img, txt, value) {
-	if (value == 0) {
-		img.setAttribute("class", "card-img-top bg-danger");
-		if(coding == "a1"){
-			txt.innerText = "开";
-		}else{
-			txt.innerText = "异常";
-		}
-	} else {
-		img.setAttribute("class", "card-img-top bg-info");
-		if(coding == "a1"){
-			txt.innerText = "关";
-		}else{
-			txt.innerText = "正常";
-		}
-	}
-}
-
-// 0开,1关
-function device(img, txt, value, btn) {
-	if (value == 0) {
-		img.setAttribute("class", "card-img-top bg-success");
-		txt.innerText = "开";
-		btn.setAttribute("class", "col m-1 btn btn-success");
-	} else {
-		img.setAttribute("class", "card-img-top bg-info");
-		txt.innerText = "关";
-		btn.setAttribute("class", "col m-1 btn btn-info");
-	}
-}
-
-function initWebSocket() {
-	// 变量ser在index.jsp文件中初始化,读取request的参数需要在jsp文件中
-	console.info(serverIp);
-
-	var socket = new SockJS('/gs-guide-websocket');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
-            stompClient.send("/app/hello", {}, JSON.stringify({'message': 'hello'}));
-            stompClient.subscribe('/topic/greetings', function (greeting) {
-                console.log('received: ' + JSON.parse(greeting.body).message);
-                stompClient.send("/app/hello", {}, JSON.stringify({'message': 'hello'}));
-            });
-            stompClient.subscribe('/topic/valueChanged', function (greeting) {
-                            console.log('received valueChanged: ' + JSON.parse(greeting.body).message);
-                        });
-        });
+    }
 }
 
 function sendHeart(){
-	send("H");
+	stompClient.send("/app/eleInfo", {}, JSON.stringify({'message': 'eleInfo'}));
 }
 
 function clearTime() {
@@ -264,39 +239,4 @@ function send(message) {
 	}
 }
 
-window.onunload = clearTime;
-
-function test1() {
-	var t1 = '{"id":0,"coding":"axA","value":1}'
-	alert(t1);
-	analysis(t1);
-	//
-	var t2 = '{"id":0,"coding":"bxA","value":2}'
-	analysis(t2);
-
-	var t3 = '{"id":0,"coding":"cxA","value":3}'
-	analysis(t3);
-
-	t1 = '{"id":0,"coding":"axV","value":4}'
-	analysis(t1);
-	//
-	t2 = '{"id":0,"coding":"bxV","value":5}'
-	analysis(t2);
-
-	t3 = '{"id":0,"coding":"cxV","value":6}'
-	analysis(t3);
-
-	t3 = '{"id":0,"coding":"yinshu","value":7}'
-	analysis(t3);
-}
-
-function test2() {
-	var t1 = '{"coding":"a1","value":0}'
-	analysis(t1);
-	//
-	var t2 = '{"coding":"a2","value":1}'
-	analysis(t2);
-
-	var t3 = '{"coding":"d1","value":0}'
-	analysis(t3);
-}
+//window.onunload = clearTime;
